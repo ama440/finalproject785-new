@@ -10,7 +10,7 @@ pca <- DimPlot(seu.combined, reduction = "pca", group.by = "donor_id") +
   ggtitle("PCA Plot")
 ggsave("figures/PCA.png", pca)
 
-cluster_df <- data.frame(cbind(Idents(seu.combined), metadata$donor_id))
+cluster_df <- data.frame(cbind(Idents(seu.combined), seu.combined$cell_type__custom))
 names(cluster_df) <- c("assigned_cluster", "donor_id")
 cluster_df$assigned_cluster <- as.numeric(cluster_df$assigned_cluster)
 table(cluster_df$assigned_cluster, cluster_df$donor_id)
@@ -28,6 +28,6 @@ umap_disease <- DimPlot(seu.combined, reduction = "umap", group.by = "disease_st
   ggtitle("UMAP Plot")
 ggsave("figures/UMAP_disease.png", umap_disease)
 
-ElbowPlot(object=seu.combined, ndims = 30)
+elbow <- ElbowPlot(object=seu.combined, ndims = 30)
+ggsave("figures/elbow_plot.png", elbow)
 # elbow appears around 15 PCs hence why I used 15 for the umaps 
-FeaturePlot(seu.combined, features = c("Braf","Raf1","Mapk1"))
