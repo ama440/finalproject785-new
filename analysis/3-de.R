@@ -39,11 +39,12 @@ pod_markers$...1
 
 # Ridge plots - Visualize single cell expression distributions in each cluster
 ridge_pod <- RidgePlot(subset(seu.combined, subset = cell_type__custom == "Podocyte"), 
-                       features = pod_markers$...1, ncol = 5)
+                       features = pod_markers$...1[c(1:10,12,13)], ncol = 4) &
+  scale_fill_manual(values = alpha(c("#F8766D", "#00BEC4"), .8))
 ggsave("figures/ridge_podocyte.png", ridge_pod, width = 15, height = 9)
 
 
-Idents(seu.combined) <- "donor_id"
+Idents(seu.combined) <- "disease_status"
 DotPlot(subset(seu.combined, subset = cell_type__custom == "Podocyte"),
                features = c("Mapk1","Raf1","Braf")) + RotatedAxis()
 DotPlot(subset(seu.combined, subset = cell_type__custom %in% c("PT-S1", "PT-S2", "PT-S3")),
