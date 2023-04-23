@@ -8,17 +8,17 @@ library(patchwork)
 library(data.table)
 
 # Read in data
-ctrl1 <- fread("Data/ctrl1.csv", header = T)
+ctrl1 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/ctrl1.csv", header = T)
 ctrl1 <- setDF(ctrl1)
-ctrl2 <- fread("Data/ctrl2.csv", header = T)
+ctrl2 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/ctrl2.csv", header = T)
 ctrl2 <- setDF(ctrl2)
-ctrl3 <- fread("Data/ctrl3.csv", header = T)
+ctrl3 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/ctrl3.csv", header = T)
 ctrl3 <- setDF(ctrl3)
-kd1 <- fread("Data/kdkd1.csv", header = T)
+kd1 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/kdkd1.csv", header = T)
 kd1 <- setDF(kd1)
-kd2 <- fread("Data/kdkd2.csv", header = T)
+kd2 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/kdkd2.csv", header = T)
 kd2 <- setDF(kd2)
-kd3 <- fread("Data/kdkd3.csv", header = T)
+kd3 <- fread("~/Documents/1-UNC/1-Classes/BIOS785/Data/kdkd3.csv", header = T)
 kd3 <- setDF(kd3)
 
 # Combine datasets
@@ -110,4 +110,4 @@ seu.combined <- IntegrateData(anchorset = anchors)
 DefaultAssay(seu.combined) <- "integrated"
 
 # Save Seurat object as RDS
-saveRDS(seu.combined, "Data/integrated.rds")
+saveRDS(seu.combined, "~/Documents/1-UNC/1-Classes/BIOS785/Data/integrated.rds")
