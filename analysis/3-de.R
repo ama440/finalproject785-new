@@ -13,23 +13,23 @@ unique(seu.combined$cell_type__custom)
 
 #### Differential Expression Analysis within cell types ####
 # Podocyte
-marker_genes <- FindMarkers(subset(seu.combined, subset = cell_type__custom == "Podocyte"), 
+marker_genes_pod <- FindMarkers(subset(seu.combined, subset = cell_type__custom == "Podocyte"), 
                              ident.1 = "CTRL", ident.2 = "KDKD")
-marker_genes$p_val_adj = p.adjust(marker_genes$p_val, method='fdr')
-head(marker_genes %>% arrange(desc(avg_log2FC)), 15)
-head(marker_genes, 10)
+marker_genes_pod$p_val_adj = p.adjust(marker_genes_pod$p_val, method='fdr')
+head(marker_genes_pod %>% arrange(desc(avg_log2FC)), 15)
+head(marker_genes_pod, 10)
 
 celltypes <- unique(seu.combined$cell_type__custom)
 ngenes <- 15
 for (celltype in celltypes) {
   # Find marker genes
-  marker_genes <- FindMarkers(subset(seu.combined, subset = cell_type__custom == celltype), 
+  marker_genes_i <- FindMarkers(subset(seu.combined, subset = cell_type__custom == celltype), 
                               ident.1 = "CTRL", ident.2 = "KDKD")
   # Use Benjamini & Hochberg procedure to adjust p-values; less conservative than default Bonferroni correction
-  marker_genes$p_val_adj = p.adjust(marker_genes$p_val, method='fdr')
+  marker_genes_i$p_val_adj = p.adjust(marker_genes_i$p_val, method='fdr')
   # Write dataframes to csv
   if (celltype == "TAL/DCT") {celltype = "TAL-DCT"}
-  write.csv(head(marker_genes, ngenes), 
+  write.csv(head(marker_genes_i, ngenes), 
             file.path("markers_by_cell", paste0(celltype, ".csv")))
 }
 
@@ -49,3 +49,4 @@ DotPlot(subset(seu.combined, subset = cell_type__custom == "Podocyte"),
                features = c("Mapk1","Raf1","Braf")) + RotatedAxis()
 DotPlot(subset(seu.combined, subset = cell_type__custom %in% c("PT-S1", "PT-S2", "PT-S3")),
         features = c("Mapk1","Raf1","Braf")) + RotatedAxis()
+
