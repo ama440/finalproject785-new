@@ -6,7 +6,7 @@ seu.combined <- RunPCA(seu.combined, npcs = 30, verbose = FALSE)
 seu.combined <- RunUMAP(seu.combined, reduction = "pca", dims = 1:15)
 seu.combined <- RunTSNE(seu.combined, reduction = "pca", dims = 1:15)
 seu.combined <- FindNeighbors(seu.combined, reduction = "pca", dims = 1:15)
-seu.combined <- FindClusters(seu.combined, resolution = 0.5)
+seu.combined <- FindClusters(seu.combined, resolution = 0.2)
 
 # PCA
 pca <- DimPlot(seu.combined, reduction = "pca", group.by = "donor_id") + 
