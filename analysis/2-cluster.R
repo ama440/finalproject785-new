@@ -6,25 +6,31 @@ seu.combined <- RunPCA(seu.combined, npcs = 30, verbose = FALSE)
 seu.combined <- RunUMAP(seu.combined, reduction = "pca", dims = 1:15)
 seu.combined <- RunTSNE(seu.combined, reduction = "pca", dims = 1:15)
 seu.combined <- FindNeighbors(seu.combined, reduction = "pca", dims = 1:15)
-seu.combined <- FindClusters(seu.combined, resolution = 0.2)
+seu.combined <- FindClusters(seu.combined, resolution = 0.5)
 
 # PCA
 pca <- DimPlot(seu.combined, reduction = "pca", group.by = "donor_id") + 
   ggtitle("PCA Plot")
 ggsave("figures/PCA.png", pca)
 
+Idents(seu.combined) <- "seurat_clusters"
 cluster_df <- data.frame(cbind(Idents(seu.combined), seu.combined$cell_type__custom))
-names(cluster_df) <- c("assigned_cluster", "donor_id")
+names(cluster_df) <- c("assigned_cluster", "cell_type__custom")
 cluster_df$assigned_cluster <- as.numeric(cluster_df$assigned_cluster)
-table(cluster_df$assigned_cluster, cluster_df$donor_id)
+table(cluster_df$assigned_cluster, cluster_df$cell_type__custom)
+Idents(seu.combined) <- "disease_status"
 
 # Create UMAP
 umap_celltype <- DimPlot(seu.combined, reduction = "umap", group.by = "cell_type__custom") + 
-  ggtitle("UMAP Plot")
+  ggtitle("Without Imputation") + labs(color = "Celltype")
 ggsave("figures/UMAP_celltype.png", umap_celltype)
 
+umap_cluster <- DimPlot(seu.combined, reduction = "umap", group.by = "seurat_clusters") + 
+  ggtitle("UMAP Plot") + labs(color = "Cluster")
+ggsave("figures/UMAP_cluster.png", umap_cluster)
+
 umap_donor <- DimPlot(seu.combined, reduction = "umap", group.by = "donor_id") + 
-  ggtitle("UMAP Plot")
+  ggtitle("UMAP Plot") + labs(color = "Mouse ID")
 ggsave("figures/UMAP_donor.png", umap_donor)
 
 umap_disease <- DimPlot(seu.combined, reduction = "umap", group.by = "disease_status") + 
@@ -66,7 +72,7 @@ table(cluster_df$assigned_cluster, cluster_df$donor_id)
 
 # Create UMAP
 umap_celltype.s <- DimPlot(seu.combined.s, reduction = "umap", group.by = "cell_type__custom") + 
-  ggtitle("UMAP Plot")
+  ggtitle("With SAVER Imputation") + labs(color = "Cluster")
 ggsave("figures/UMAP_celltype_saver.png", umap_celltype.s)
 
 umap_donor.s <- DimPlot(seu.combined.s, reduction = "umap", group.by = "donor_id") + 

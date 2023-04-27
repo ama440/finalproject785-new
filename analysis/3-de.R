@@ -17,7 +17,7 @@ marker_genes_pod <- FindMarkers(subset(seu.combined, subset = cell_type__custom 
                              ident.1 = "CTRL", ident.2 = "KDKD")
 marker_genes_pod$p_val_adj = p.adjust(marker_genes_pod$p_val, method='fdr')
 head(marker_genes_pod %>% arrange(desc(avg_log2FC)), 15)
-head(marker_genes_pod, 10)
+head(marker_genes_pod, 15)
 
 celltypes <- unique(seu.combined$cell_type__custom)
 ngenes <- 15
@@ -39,7 +39,7 @@ pod_markers$...1
 
 # Ridge plots - Visualize single cell expression distributions in each cluster
 ridge_pod <- RidgePlot(subset(seu.combined, subset = cell_type__custom == "Podocyte"), 
-                       features = pod_markers$...1[c(1:10,12,13)], ncol = 4) &
+                       features = pod_markers$...1[c(1:6)], ncol = 3) &
   scale_fill_manual(values = alpha(c("#F8766D", "#00BEC4"), .8))
 ggsave("figures/ridge_podocyte.png", ridge_pod, width = 15, height = 9)
 

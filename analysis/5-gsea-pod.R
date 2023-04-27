@@ -53,8 +53,8 @@ collapsedPathways <- collapsePathways(fgseaRes[order(pval)][padj < 0.01],
 mainPathways <- fgseaRes[pathway %in% collapsedPathways$mainPathways][
   order(NES), pathway]
 gsea_table <- plotGseaTable(mouse_cp[mainPathways], ranks, fgseaRes, 
-                            gseaParam = 0.5, pathwayLabelStyle = list(size=10))
-ggsave("figures/gsea_table.png", gsea_table, width = 16, height = 9, scale = 1.1)
+                            gseaParam = 1, pathwayLabelStyle = list(size=10))
+ggsave("figures/gsea_table.png", gsea_table, width = 16, height = 9, scale = .7)
 
 # NES: normalized enrichment score
 
@@ -63,3 +63,17 @@ mouse_cp$REACTOME_FORMATION_OF_A_POOL_OF_FREE_40S_SUBUNITS
 mouse_cp$WP_CYTOPLASMIC_RIBOSOMAL_PROTEINS
 
 
+summary((markers_pod$X %in% mouse_cp$REACTOME_FORMATION_OF_A_POOL_OF_FREE_40S_SUBUNITS))
+
+markers_pod %>% 
+  filter(X %in% mouse_cp$REACTOME_FORMATION_OF_A_POOL_OF_FREE_40S_SUBUNITS) %>% 
+  pull(rank_metric) %>% 
+  sum()
+
+leading_edge <- markers_pod %>% 
+  filter(X %in% mouse_cp$REACTOME_FORMATION_OF_A_POOL_OF_FREE_40S_SUBUNITS) %>%
+  filter(rank_metric < -0.8581) %>% 
+  pull(X)
+
+leading_edge <- head(fgseaRes[order(pval),],2)$leadingEdge
+paste(leading_edge[[1]], collapse = ", ")
